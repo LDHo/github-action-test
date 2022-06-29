@@ -29,7 +29,8 @@ jobs:
           changed=$(ct list-changed --config .github/chart-testing-config.yml)
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
+            echo $changed
           fi
 
-      - name: Run chart-testing (lint)
-        run: ct lint --config .github/chart-testing-config.yml
+#       - name: Run chart-testing (lint)
+#         run: helm lint -f

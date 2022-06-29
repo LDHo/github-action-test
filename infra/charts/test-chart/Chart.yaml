@@ -2,8 +2,8 @@ apiVersion: v2
 name: test-chart
 description: A Helm chart for Kubernetes
 maintainers:
-  - name: LDHo
-    email: test@gmail.com
+- name: LDHo
+  email: test@gmail.com
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives

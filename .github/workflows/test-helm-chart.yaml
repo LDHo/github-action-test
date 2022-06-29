@@ -29,8 +29,21 @@ jobs:
           changed=$(ct list-changed --config .github/chart-testing-config.yml)
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
-            echo $changed
-          fi
-
-#       - name: Run chart-testing (lint)
-#         run: helm lint -f
+            echo $changed > changed.txt
+            tr ' ' '\n' < changed.txt > chartList.txt
+          fi 
+          
+      - name: Run helm template
+        if: steps.list-changed.outputs.changed == 'true'
+        run: | ## Will only run if there is chart changes recorded from previous step
+          currentDir=$(pwd)
+          while read p; do
+            echo "Running helm template in $currentDir/$p"
+            cd $currentDir/$p
+            ls | grep values.yaml > valuesList.txt
+            sed -i '/valuesList.txt/d' valuesList.txt
+            while read t; do
+              echo templating using $t 
+              helm template -f $t . 1> /dev/null
+            done < valuesList.txt
+          done <chartList.txt

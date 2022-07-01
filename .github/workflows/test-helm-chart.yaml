@@ -19,12 +19,4 @@ jobs:
 
       - name: Run chart-testing (template)
         run: |
-          currentDir=$(pwd)
-          echo $HELM_CHART_PATH
-          cd $currentDir/$HELM_CHART_PATH
-          ls | grep values.yaml > valuesList.txt
-          sed -i '/valuesList.txt/d' valuesList.txt
-          while read t; do
-            echo templating using $t
-            helm template -f $t . 1> /dev/null
-          done < valuesList.txt
+          helm template -f $HELM_CHART_PATH/values.yaml $HELM_CHART_PATH 1> /dev/null
